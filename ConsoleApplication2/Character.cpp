@@ -48,5 +48,5 @@ int Character::gety()
 
 Runner::Runner()
 {
-	Speed = 1;
+	Speed = 2;
 }

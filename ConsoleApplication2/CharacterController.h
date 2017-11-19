@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Builder.h"
 #include "Object.h"
+#include "Collider.h"
 
 
 //Enum for checing what's going on with main character
@@ -17,18 +18,22 @@ class CharacterController
 {
 
 private:
-	
-public:
-	states state = Running;
 	bool IsStanding = true;
 	bool CollisionCheckResult = false;
 	bool LadderCollision = false;
-	void UpdateCoords(Runner* runner, Input* input);
-	void RunningUpdate(Runner* runner, Input* input);
-	void FallingUpdate(Runner* runner);
-	void UpdateCoords(Robot* robot, Input* input);
+public:
 
+	friend class Game;
 
+	states state = Running;
+	Object* LadderCol;
+
+	states UpdateCharacterState(Runner* runner, Input* input);
+	void UpdateCoords(Runner * runner, Input* input, Collider* collider);
+	void RunningUpdate(Runner * runner, Input* input);
+	void FallingUpdate(Runner * runner);
+	void ClimbingUpdate(Runner * runner, Input * input, Collider* collider);
+	void UpdateRobotCoords(Robot* robot, Input* input);
 };
 
 #endif

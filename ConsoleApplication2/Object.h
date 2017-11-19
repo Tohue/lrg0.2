@@ -35,8 +35,15 @@ class Tube : public Object
 
 class Ladder : public Object
 {
+protected:
+	bool Top;
+	bool Bottom;
 public:
-	Ladder();
+
+	friend class CharacterController;
+	bool IsTop();
+	bool IsBottom();
+	Ladder(bool istop, bool isbottom);
 	
 
 

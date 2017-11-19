@@ -13,7 +13,7 @@ public:
 
 
 	bool CollisionCheck(Character* character, Object* obj, Builder* builder);
-	Object* CheckStanding(Runner* runner, Object* obj);
+	bool CheckStanding(Runner* runner, Object* obj);
 
 
 

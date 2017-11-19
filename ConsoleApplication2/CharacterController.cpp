@@ -3,22 +3,55 @@
 
 
 
-void CharacterController::UpdateCoords(Runner * runner, Input* input)
+
+
+
+
+states CharacterController::UpdateCharacterState(Runner* runner, Input* input)
+{
+	if ((LadderCollision) && ((input->KeyDown(SDL_SCANCODE_DOWN) || input->KeyDown(SDL_SCANCODE_UP))))
+	{
+
+		runner->x = LadderCol->getx();
+		runner->y = LadderCol->gety();
+		return Climbing;
+	}
+
+	if (IsStanding)
+		return Running;
+	else
+		return Falling;
+
+
+}
+
+void CharacterController::UpdateCoords(Runner * runner, Input* input, Collider* collider)
 {
 
-	switch (state)
+
+	switch (state = UpdateCharacterState(runner, input))
 	{
+	case Climbing:
+		ClimbingUpdate(runner, input, collider);
+		break;
 	case Running:
 		RunningUpdate(runner, input);
 		break;
 	case Falling:
 		FallingUpdate(runner);
 		break;
+
 	}
 
 }
 
 
+void CharacterController::ClimbingUpdate(Runner * runner, Input * input, Collider* collider)
+{
+
+
+
+}
 
 void CharacterController::RunningUpdate(Runner * runner, Input * input)
 {
@@ -29,6 +62,8 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 
 	if (input->KeyDown(SDL_SCANCODE_LEFT))
 	{
+
+
 		if (!CollisionCheckResult)
 		{
 
@@ -37,9 +72,12 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 		}
 		else
 		{
+			if (IsStanding)
+
 			runner->MoveRight();
 			CollisionCheckResult = false;
 		}
+		
 
 
 	}
@@ -52,34 +90,15 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 		}
 		else
 		{
+			if (IsStanding)
 			runner->MoveLeft();
 			CollisionCheckResult = false;
-		}
-
-
-	}
-	if (input->KeyDown(SDL_SCANCODE_UP))
-	{
-		if (LadderCollision)
-		{
-
-			runner->ClimbUp();
-			runner->setdir(Up);
-		}
-	}
-	if (input->KeyDown(SDL_SCANCODE_DOWN))
-	{
-		if (LadderCollision)
-		{
-			runner->ClimbDown();
-			runner->setdir(Down);
-		}
+		}  
 
 	}
-
 
 	//THE FOLLOWINGS ARE TO MAKE SURE THE PLAYER SURELY MAKES HIS WAY OUT OF COL POINT
-
+	/*
 
 	if (input->KeyUp(SDL_SCANCODE_LEFT))
 	{
@@ -116,6 +135,7 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 
 		}
 	}
+	*/
 }
 
 void CharacterController::FallingUpdate(Runner * runner)
@@ -127,5 +147,9 @@ void CharacterController::FallingUpdate(Runner * runner)
 		
 	else
 		runner->ClimbDown();
+}
+
+void CharacterController::UpdateRobotCoords(Robot * robot, Input * input)
+{
 }
 

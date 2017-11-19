@@ -14,7 +14,7 @@ void Builder::Build(char LevelStruct[])
 	memset(grid, 0, sizeof grid);
 
 	//Loading level structure
-	int j;
+	int j,m;
 	int k = 0;
 
 	for (j = 0; j < 15; j++)
@@ -50,11 +50,17 @@ void Builder::Build(char LevelStruct[])
 				runner = new Runner();
 				runner->setdir(Left);
 				runner->x = i * GRID_SIZE;
-				runner->y = j * GRID_SIZE;
+				runner->y = j * GRID_SIZE - 5;
 			}
 			if (grid[i][j] == '#')
 			{
-				Ladder* ladder = new Ladder();
+				bool NoUpperParts = false;
+				bool NoPartsLower = false;
+				if (grid[i][j + 1] != '#')
+					NoPartsLower = true;
+				if (grid[i][j - 1] != '#')
+					NoUpperParts = true;
+				Ladder* ladder = new Ladder(NoUpperParts, NoPartsLower);
 				ladder->x = i * GRID_SIZE;
 				ladder->y = j * GRID_SIZE;
 				ObjectList.push_back(ladder);

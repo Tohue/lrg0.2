@@ -11,6 +11,7 @@ Game::Game()
 	
 	builder = new Builder();
 	charcont = new CharacterController();
+	collider = new Collider();
 	
 }
 
@@ -32,38 +33,30 @@ int Game::Run(int x, int y)
 		input->Update();
 
 		//COLLISIONCHECK BLOCK
-		
-		charcont->IsStanding = false;
-		charcont->LadderCollision = false;
-		charcont->CollisionCheckResult = false;
 		std::list<Object*>::iterator it = builder->ObjectList.begin();
 		while ((++it != builder->ObjectList.end()) && (!charcont->CollisionCheckResult))
 		{
 			//First off we need to check if there is any block under the legs thru the gridding method
-			charcont->CheckStanding(builder->runner, *it);
-			//Then we check if there are some ladders to climb
-			if ((*it)->Climbable)
-			{
-				if (charcont->LadderCollisionCheck(builder->runner, *it, builder, input))
+			charcont->IsStanding = (collider->CheckStanding(builder->runner, *it));
+			//If the collision happens
+			if (collider->CollisionCheck(builder->runner, *it, builder))
+			//We tell charcont if there are some ladders to climb
+				if ((*it)->Climbable)
+				{
+					charcont->LadderCol = (*it);
 					charcont->LadderCollision = true;
-			}
-			else
-				//Finally we check the blocks we don't want to get into
-				if (charcont->CollisionCheck(builder->runner, *it, builder))
-					charcont->CollisionCheckResult = true;
+					
+				}
+			//Finally we'll try avoid the blocks we don't want to get into
+				else
+				charcont->CollisionCheckResult = true;
 		}
-		if (charcont->IsStanding == false)
-		{
-			//std::cout << "zemlya te puxom\n";
-			charcont->state = Falling;
-		}
-			
-
+		charcont->CollisionCheckResult = false;
 
 		for (std::list<Object*>::iterator it = builder->ObjectList.begin(); it != builder->ObjectList.end(); ++it)
 			drawer->UpdateSprite(*it, graph);
 
-		charcont->UpdateCoords(builder->runner, input);
+		charcont->UpdateCoords(builder->runner, input, collider);
 		drawer->UpdateSprite(builder->runner, GetGraphics(), GetInput());
 	
 

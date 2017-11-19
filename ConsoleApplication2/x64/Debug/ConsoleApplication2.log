@@ -1,20 +1,4 @@
-﻿  main.cpp
-  Sprite.cpp
-  Object.cpp
-  LevelManager.cpp
-  Input.cpp
-  Graphics.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\graphics.cpp(68): warning C4477: "printf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "std::string *"
-  Game.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(43): error C2039: CheckStanding: не является членом "CharacterController"
-  c:\users\user\source\repos\lode runner\consoleapplication2\charactercontroller.h(17): note:  см. объявление "CharacterController"
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(47): error C2039: LadderCollisionCheck: не является членом "CharacterController"
-  c:\users\user\source\repos\lode runner\consoleapplication2\charactercontroller.h(17): note:  см. объявление "CharacterController"
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(52): error C2039: CollisionCheck: не является членом "CharacterController"
-  c:\users\user\source\repos\lode runner\consoleapplication2\charactercontroller.h(17): note:  см. объявление "CharacterController"
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(76): warning C4551: в вызове функции отсутствует список аргументов
-  Drawer.cpp
-  CharacterController.cpp
-  Character.cpp
-  Builder.cpp
-  Создание кода...
+﻿  Game.cpp
+c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(68): warning C4551: в вызове функции отсутствует список аргументов
+c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(27): warning C4101: i: неиспользованная локальная переменная
+  ConsoleApplication2.vcxproj -> C:\Users\user\source\repos\Lode Runner\x64\Debug\Lode Runner.exe
