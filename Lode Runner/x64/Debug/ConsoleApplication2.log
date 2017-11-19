@@ -1,0 +1,6 @@
+﻿  CharacterController.cpp
+c:\users\user\source\repos\consoleapplication2\consoleapplication2\charactercontroller.cpp(99): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\users\user\source\repos\consoleapplication2\consoleapplication2\charactercontroller.cpp(100): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\users\user\source\repos\consoleapplication2\consoleapplication2\charactercontroller.cpp(98): warning C4101: ax2: неиспользованная локальная переменная
+c:\users\user\source\repos\consoleapplication2\consoleapplication2\charactercontroller.cpp(98): warning C4101: ax1: неиспользованная локальная переменная
+  ConsoleApplication2.vcxproj -> C:\Users\user\source\repos\ConsoleApplication2\x64\Debug\ConsoleApplication2.exe

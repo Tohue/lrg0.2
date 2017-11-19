@@ -1,0 +1,2 @@
+﻿  ConsoleApplication2.cpp
+c:\users\user\source\repos\consoleapplication2\consoleapplication2\consoleapplication2.cpp(53): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
