@@ -31,6 +31,7 @@ int Game::Run(int x, int y)
 	while (IsOn) 
 	{
 		input->Update();
+		drawer->DrawBackgrounds(graph);
 
 		//COLLISIONCHECK BLOCK
 		std::list<Object*>::iterator it = builder->ObjectList.begin();

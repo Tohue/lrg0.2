@@ -1,4 +1,1 @@
-﻿  Game.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(68): warning C4551: в вызове функции отсутствует список аргументов
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(27): warning C4101: i: неиспользованная локальная переменная
-  ConsoleApplication2.vcxproj -> C:\Users\user\source\repos\Lode Runner\x64\Debug\Lode Runner.exe
+﻿  ConsoleApplication2.vcxproj -> C:\Users\user\source\repos\Lode Runner\x64\Debug\Lode Runner.exe

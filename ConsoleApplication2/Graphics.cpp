@@ -20,8 +20,8 @@ void Graphics::UpdateGraphics()
 	//SDL_RenderPresent(Renderer);
 	
 	//**The following function turns the whole screen black every tick to draw everithyng again
-	SDL_FillRect(Screen, NULL, 0x000000);
-	SDL_Delay(20);
+	SDL_FillRect(Screen, NULL, 0x000000);//16776960);
+	SDL_Delay(50);
 }
 void Graphics::ShutDownGraphics()
 {
@@ -90,6 +90,20 @@ bool Graphics::DrawSprite(Sprite* img, int x, int y)
 	SDL_Rect Area;
 	Area.x = x;
 	Area.y = y;
+
+	SDL_BlitSurface(img->surface, NULL, Screen, &Area);
+	return true;
+}
+
+bool Graphics::DrawSprite(Sprite* img, int x, int y, int alpha)
+{
+	if (Screen == NULL || img->surface == NULL)
+		return false;
+
+	SDL_Rect Area;
+	Area.x = x;
+	Area.y = y;
+
 
 	SDL_BlitSurface(img->surface, NULL, Screen, &Area);
 	return true;

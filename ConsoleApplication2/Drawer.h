@@ -16,13 +16,16 @@ class Graphics;
 class Drawer
 {
 private:
-	int RightFrame = 1;
-	int LeftFrame = 1;
-	int UpFrame = 1;
-	int DownFrame = 1;
+	int RightFrame = 0;
+	int LeftFrame = 0;
+	int UpFrame = 0;
+	int DownFrame = 0;
+	int BackgroundGridFrame = 0;
 public:
-	Sprite* TestAsset[5];
+	Sprite* TestAsset[7];
 	Drawer(Graphics* graph);
+
+	void DrawBackgrounds(Graphics * graph);
 
 	void UpdateSprite(Runner* runner, Graphics* graph, Input* input);
 	void UpdateSprite(Object* object, Graphics* graph);
