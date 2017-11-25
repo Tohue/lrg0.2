@@ -27,7 +27,6 @@ public:
 
 	std::list<Object*> ObjectList;
 
-
 };
 
 

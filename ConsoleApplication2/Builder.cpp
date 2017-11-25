@@ -8,7 +8,7 @@
 void Builder::Build(char LevelStruct[])
 {
 
-	char ObjectMaps[] = { '*', '_', '@' , '#'};
+	char ObjectMaps[] = {'_', '@' , '#', '1'};
 	std::set<char> a(ObjectMaps, ObjectMaps + 4);
 
 	memset(grid, 0, sizeof grid);
@@ -37,7 +37,7 @@ void Builder::Build(char LevelStruct[])
 	{
 		for (i = 0; i < 21; i++)
 		{
-			if (grid[i][j] == '*')
+			if (grid[i][j] == '1')
 			{
 				Object* block = new Block();
 				block->x = i * GRID_SIZE;
@@ -45,12 +45,22 @@ void Builder::Build(char LevelStruct[])
 				ObjectList.push_back(block);
 
 			}
+
+			if (grid[i][j] == '_')
+			{
+				Object* block = new Block();
+				block->x = i * GRID_SIZE;
+				block->y = j * GRID_SIZE;
+				ObjectList.push_back(block);
+
+			}
+
 			if (grid[i][j] == '@')
 			{
 				runner = new Runner();
 				runner->setdir(Left);
 				runner->x = i * GRID_SIZE;
-				runner->y = j * GRID_SIZE - 5;
+				runner->y = j * GRID_SIZE;
 			}
 			if (grid[i][j] == '#')
 			{

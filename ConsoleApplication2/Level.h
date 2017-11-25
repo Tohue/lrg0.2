@@ -14,5 +14,15 @@ public:
 };
 
 
+class Platform
+{
+
+private:
+
+public:
+
+
+};
+
 
 #endif

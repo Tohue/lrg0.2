@@ -21,6 +21,8 @@ private:
 	bool IsStanding = true;
 	bool CollisionCheckResult = false;
 	bool LadderCollision = false;
+	bool LeftCol = false;
+	bool RightCol = false;
 public:
 
 	friend class Game;

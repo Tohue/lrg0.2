@@ -58,8 +58,6 @@ int Graphics::ToggleFullScreen()
 
 //***********Img-related***********\\
 
-//TODO: overload the following function third time to match the spritesheet format;
-//		adapt the SPRITE class to have an option to be animated
 
 Sprite* Graphics::NewSprite(std::string* file)
 {

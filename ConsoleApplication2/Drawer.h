@@ -18,8 +18,7 @@ class Drawer
 private:
 	int RightFrame = 0;
 	int LeftFrame = 0;
-	int UpFrame = 0;
-	int DownFrame = 0;
+	int ClimbFrame = 0;
 	int BackgroundGridFrame = 0;
 public:
 	Sprite* TestAsset[7];

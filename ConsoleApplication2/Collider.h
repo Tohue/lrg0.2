@@ -8,15 +8,13 @@
 class Collider
 
 {
-
+private:
+	int Last_standing_X;
 public:
 
 
 	bool CollisionCheck(Character* character, Object* obj, Builder* builder);
 	bool CheckStanding(Runner* runner, Object* obj);
-
-
-
 
 };
 

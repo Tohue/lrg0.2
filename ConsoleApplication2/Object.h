@@ -6,9 +6,13 @@
 class Object
 {
 protected:
+	bool Top = false;
+	bool Bottom = false; 
 	int x, y;
 
 public:
+	bool IsTop();
+	bool IsBottom();
 	friend class Builder;
 	int getx();
 	int gety();
@@ -40,7 +44,7 @@ protected:
 	bool Bottom;
 public:
 
-	friend class CharacterController;
+	//friend class CharacterController;
 	bool IsTop();
 	bool IsBottom();
 	Ladder(bool istop, bool isbottom);

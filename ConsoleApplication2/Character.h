@@ -25,10 +25,10 @@ public:
 	int gety();
 	friend class Builder;
 	friend class CharacterController;
-	void MoveLeft();
-	void MoveRight();
-	void ClimbUp();
-	void ClimbDown();
+	void MoveLeft(int spd);
+	void MoveRight(int spd);
+	void ClimbUp(int spd);
+	void ClimbDown(int spd);
 };
 
 //NEED TO DECIDE SHOULD I KEEP SO MANY METHODS IN 'PUBLIC'

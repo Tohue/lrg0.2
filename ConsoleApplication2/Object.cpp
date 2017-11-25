@@ -1,6 +1,15 @@
-#include "stdafx.h"
 #include "Object.h"
 
+
+bool Object::IsTop()
+{
+	return Top;
+}
+
+bool Object::IsBottom()
+{
+	return Bottom;
+}
 
 int Object::getx()
 {

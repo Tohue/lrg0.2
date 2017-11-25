@@ -9,30 +9,31 @@
 
 states CharacterController::UpdateCharacterState(Runner* runner, Input* input)
 {
-	if ((LadderCollision) && ((input->KeyDown(SDL_SCANCODE_DOWN) || input->KeyDown(SDL_SCANCODE_UP))))
+	if (LadderCollision)
 	{
+		if (state != Climbing && IsStanding)
+			return Running;
 
-		runner->x = LadderCol->getx();
-		runner->y = LadderCol->gety();
-		return Climbing;
+		else if (state == Climbing) return Climbing;
+
 	}
-
 	if (IsStanding)
-		return Running;
-	else
-		return Falling;
+	return Running;
+	
+	return Falling;
 
 
 }
 
 void CharacterController::UpdateCoords(Runner * runner, Input* input, Collider* collider)
 {
-
+	//mb remove this switch, it's ugly
 
 	switch (state = UpdateCharacterState(runner, input))
 	{
 	case Climbing:
-		ClimbingUpdate(runner, input, collider);
+		RunningUpdate(runner, input);
+		//ClimbingUpdate(runner, input, collider);
 		break;
 	case Running:
 		RunningUpdate(runner, input);
@@ -50,7 +51,6 @@ void CharacterController::ClimbingUpdate(Runner * runner, Input * input, Collide
 {
 
 
-
 }
 
 void CharacterController::RunningUpdate(Runner * runner, Input * input)
@@ -64,89 +64,78 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 	{
 
 
-		if (!CollisionCheckResult)
+		if (!LeftCol)
 		{
-
-			runner->MoveLeft();
+			runner->MoveLeft(5);
 			runner->setdir(Left);
 		}
 		else
-		{
-			if (IsStanding)
+			runner->MoveRight(0);
 
-			runner->MoveRight();
-			CollisionCheckResult = false;
-		}
 		
 
 
 	}
 	if (input->KeyDown(SDL_SCANCODE_RIGHT))
 	{
-		if (!CollisionCheckResult)
+		if (!RightCol)
 		{
-			runner->MoveRight();
+			runner->MoveRight(5);
 			runner->setdir(Right);
 		}
 		else
-		{
-			if (IsStanding)
-			runner->MoveLeft();
-			CollisionCheckResult = false;
-		}  
+			runner->MoveLeft(0);
 
 	}
 
-	//THE FOLLOWINGS ARE TO MAKE SURE THE PLAYER SURELY MAKES HIS WAY OUT OF COL POINT
-	/*
-
-	if (input->KeyUp(SDL_SCANCODE_LEFT))
+	if (input->KeyDown(SDL_SCANCODE_UP))
 	{
-		if ((runner->getdir() == Left) && (CollisionCheckResult))
+		if (LadderCollision)
 		{
-			runner->MoveRight();
-			CollisionCheckResult = false;
+			
+				runner->x = LadderCol->getx();
+				runner->ClimbUp(5);
+				runner->setdir(Up);
 		}
-	}
+		else
+			state = Running;		
 
-	if (input->KeyUp(SDL_SCANCODE_RIGHT))
-	{
-		if ((runner->getdir() == Right) && (CollisionCheckResult))
-		{
-			runner->MoveLeft();
-			CollisionCheckResult = false;
-		}
 	}
-	if (input->KeyUp(SDL_SCANCODE_UP))
+	if (input->KeyDown(SDL_SCANCODE_DOWN))
 	{
-		if ((runner->getdir() == Up) && (CollisionCheckResult))
-		{
-			runner->ClimbDown();
-			CollisionCheckResult = false;
-		}
-	}
-	if (input->KeyUp(SDL_SCANCODE_DOWN))
-	{
-		if ((runner->getdir() == Down) && (CollisionCheckResult))
+		if (LadderCollision)
 		{
 
-			runner->ClimbUp();
-			CollisionCheckResult = false;
+			if (((LadderCol != NULL) && (LadderCol->gety() == runner->gety() + 32)) || ((runner->gety() <= LadderCol->gety()) && !(LadderCol->IsBottom())))
+
+			{
+				runner->x = LadderCol->getx();
+				runner->ClimbDown(5);
+				runner->setdir(Up);
+			}
 
 		}
+		else
+			state = Running;
+
 	}
-	*/
 }
 
 void CharacterController::FallingUpdate(Runner * runner)
 {
 	if (IsStanding)
 	{
+		runner->setdir(Left);
 		state = Running;
 	}
 		
 	else
-		runner->ClimbDown();
+	{
+		runner->ClimbDown(9);
+		runner->setdir(Down);
+	}
+		
+		
 }
 
 void CharacterController::UpdateRobotCoords(Robot * robot, Input * input)

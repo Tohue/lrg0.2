@@ -24,43 +24,67 @@ int Game::Run(int x, int y)
 	lvlman = new LevelManager();
 	lvlman->LoadLevel('1');
 	builder->Build(lvlman->LevelStruct);
-	int i;
-
+	bool StandChecker = true;
+	bool LadderChecker = false;
 
 	//THE MAIN CYCLE STARTS HERE
 	while (IsOn) 
 	{
 		input->Update();
 		drawer->DrawBackgrounds(graph);
-
 		//COLLISIONCHECK BLOCK
+		//move this to some other class func
 		std::list<Object*>::iterator it = builder->ObjectList.begin();
-		while ((++it != builder->ObjectList.end()) && (!charcont->CollisionCheckResult))
+		while (++it != builder->ObjectList.end())
 		{
 			//First off we need to check if there is any block under the legs thru the gridding method
-			charcont->IsStanding = (collider->CheckStanding(builder->runner, *it));
+			if ((collider->CheckStanding(builder->runner, *it))|| (charcont->state == Climbing))
+					StandChecker = true;
 			//If the collision happens
 			if (collider->CollisionCheck(builder->runner, *it, builder))
-			//We tell charcont if there are some ladders to climb
+				//We tell charcont if there are some ladders to climb
 				if ((*it)->Climbable)
 				{
-					charcont->LadderCol = (*it);
-					charcont->LadderCollision = true;
-					
+					if (charcont->LadderCol != (*it)) charcont->LadderCol = (*it);
+					LadderChecker = true;
 				}
 			//Finally we'll try avoid the blocks we don't want to get into
 				else
-				charcont->CollisionCheckResult = true;
+				{
+					if ((builder->runner->getx() + 32 >= (*it)->getx()) && (builder->runner->getx() + 32 <= (*it)->getx() + 32))
+					{
+						if ((builder->runner->gety() >= (*it)->gety()) && (builder->runner->gety() <= (*it)->gety() + 32))
+							charcont->RightCol = true;
+						if ((builder->runner->gety() < (*it)->gety()) && (builder->runner->gety() + 32 >= (*it)->gety() + 10))
+							charcont->RightCol = true;
+					}
+
+					if ((builder->runner->getx() <= (*it)->getx() + 32) && (builder->runner->getx() >= (*it)->getx()))
+						{
+						if ((builder->runner->gety() >= (*it)->gety()) && (builder->runner->gety() <= (*it)->gety() + 32))
+								charcont->LeftCol = true;
+								
+						if ((builder->runner->gety() < (*it)->gety()) && (builder->runner->gety() + 32 >= (*it)->gety() + 10))
+								charcont->LeftCol = true;
+						}
+				}
+
 		}
-		charcont->CollisionCheckResult = false;
+		if (LadderChecker)
+			charcont->LadderCollision = true;
+		else
+			charcont->LadderCollision = false;
+		charcont->IsStanding = StandChecker;
 
 		for (std::list<Object*>::iterator it = builder->ObjectList.begin(); it != builder->ObjectList.end(); ++it)
 			drawer->UpdateSprite(*it, graph);
 
 		charcont->UpdateCoords(builder->runner, input, collider);
 		drawer->UpdateSprite(builder->runner, GetGraphics(), GetInput());
-	
-
+		StandChecker = false;
+		LadderChecker = false;
+		charcont->LeftCol = false;
+		charcont->RightCol = false;
 
 		if (input->KeyDown(SDL_SCANCODE_F4))
 			graph->ToggleFullScreen();

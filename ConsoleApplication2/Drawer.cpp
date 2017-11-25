@@ -10,10 +10,10 @@ Drawer::Drawer(Graphics* graph)
 	TestAsset[1] = graph->NewSprite(&str, 255, 0, 255);
 	str = "../assets/Runner_Run_Right.bmp";
 	TestAsset[2] = graph->NewSprite(&str, 255, 0, 255);
-	str = "../assets/test_up.bmp";
-	TestAsset[3] = graph->NewSprite(&str);
-	str = "../assets/test_down.bmp";
-	TestAsset[4] = graph->NewSprite(&str);
+	str = "../assets/Runner_Climb.bmp";
+	TestAsset[3] = graph->NewSprite(&str, 255, 0 , 255);
+	str = "../assets/Runner_Falling.bmp";
+	TestAsset[4] = graph->NewSprite(&str, 255, 0, 255);
 	str = "../assets/test_ladder.bmp";
 	TestAsset[5] = graph->NewSprite(&str);
 	str = "../assets/Background1.bmp";
@@ -29,9 +29,6 @@ void Drawer::DrawBackgrounds(Graphics* graph)
 
 void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 {
-
-	
-
 
 	if (runner->getdir() == Left)
 	{
@@ -64,14 +61,23 @@ void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 
 	if (runner->getdir() == Up)
 	{
-		graph->DrawSprite(TestAsset[3], runner->getx(), runner->gety());
+		if (input->KeyDown(SDL_SCANCODE_UP) || input->KeyDown(SDL_SCANCODE_DOWN))
+
+		{
+			if (ClimbFrame > 2) ClimbFrame = 0;
+
+			graph->DrawSprite(TestAsset[3], runner->getx(), runner->gety(), ClimbFrame * 32, 0, 32, 32);
+			ClimbFrame++;
+		}
+		else
+			graph->DrawSprite(TestAsset[3], runner->getx(), runner->gety(), 0, 0, 32, 32);
 	}
+
 
 	if (runner->getdir() == Down)
 	{
-		graph->DrawSprite(TestAsset[4], runner->getx(), runner->gety());
+			graph->DrawSprite(TestAsset[4], runner->getx(), runner->gety(), 0, 0, 32, 32);
 	}
-
 
 
 }

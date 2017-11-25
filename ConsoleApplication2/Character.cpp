@@ -1,23 +1,23 @@
 #include "Character.h"
 
-void Character::MoveLeft()
+void Character::MoveLeft(int spd)
 {
-	x -= Speed;
+	x -= spd;
 }
 
-void Character::MoveRight()
+void Character::MoveRight(int spd)
 {
-	x += Speed;
+	x += spd;
 }
 
-void Character::ClimbUp()
+void Character::ClimbUp(int spd)
 {
-	y -= Speed;
+	y -= spd;
 }
 
-void Character::ClimbDown()
+void Character::ClimbDown(int spd)
 {
-	y += Speed;
+	y += spd;
 }
 
 

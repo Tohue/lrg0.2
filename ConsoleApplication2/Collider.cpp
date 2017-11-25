@@ -27,28 +27,31 @@ bool Collider::CollisionCheck(Character * character, Object* obj, Builder* build
 
 	}
 
-	if ((floor((double)(topB / 32))) == floor((double)(bottomA / 32 + 1)))
+	if ((topB / 32) == ((bottomA / 32) + 1))
+	{
+		printf("%d    %d", (topB / 32), (bottomA / 32 + 1));
 		return false;
+	}
+		
 	return true;
 }
 
 
 bool Collider::CheckStanding(Runner* runner, Object* obj)
 {
-	double ax, ay;
-	ax = floor((double)(runner->getx() / 32));
-	ay = floor((double)(runner->gety() / 32));
-	//(ay + 1)to check the block from the next row
-	ay = (ay + 1) * 32;
-	ax *= 32;
-	if ((((runner->getx() + 32) >= (int)ax)|| (runner->getx() <= ((int)ax + 32))) && (obj->gety() == (int)ay))
+	float ax, ay;
+	ax = float(runner->getx());
+	ay = float(runner->gety());
+	ax = (floor(ax / 32)) * 32;
+	ay = ((floor(ay / 32)) + 1) * 32;
+	
+	if ((obj->getx() == (int)ax) && (obj->gety() == (int)ay))
 	{
-		//if (((runner->getx() - obj->getx()) <= 32) || ((obj->getx() - runner->getx()) >= 32))
+		if ((floor(Last_standing_X / 32)) != floor(runner->getx() / 32)) Last_standing_X = obj->getx();
+		if (((runner->getx() + 32) >= (int)ax) || (runner->getx() <= ((int)ax + 32)))
 			return true;
 	}
-	else
-		//ZACHEM TI PRIGNUL BRAT SKAZHI ZACHEM
-		//ESLI BI MI ZNALI MIB TEBYA POYMALI
-		//NO MI NE SMOGLI TEBE POMOCH'
-		return false;
+	else if ((runner->getx() + 32 >= Last_standing_X) && (runner->getx() + 32 <= Last_standing_X + 32))
+		return true;
+	return false;
 }
