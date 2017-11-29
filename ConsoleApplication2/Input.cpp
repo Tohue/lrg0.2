@@ -16,6 +16,13 @@ bool Input::KeyDown(SDL_Scancode key)
 
 }
 
+bool Input::KeyDown(SDL_Keycode key)
+{
+
+	return (InputEvent.type == SDL_KEYDOWN && InputEvent.key.keysym.sym == key);
+
+}
+
 
 bool Input::KeyUp(SDL_Scancode key)
 {

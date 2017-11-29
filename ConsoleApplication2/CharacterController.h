@@ -12,29 +12,36 @@
 
 //Enum for checing what's going on with main character
 
-enum states { Running, Digging, Falling, Climbing };
+enum states { Running, Digging, Falling, Climbing, Tubing };
 
 class CharacterController
 {
 
 private:
+	int DiggingTimer = 0;
+	int CoinsCaptured;
 	bool IsStanding = true;
 	bool CollisionCheckResult = false;
 	bool LadderCollision = false;
+	bool TubeCollision = false;
 	bool LeftCol = false;
 	bool RightCol = false;
-public:
-
-	friend class Game;
-
-	states state = Running;
 	Object* LadderCol;
+	Object *LeftDel;
+	Object *RightDel;
+	Object *BottomBlock;
+public:
+	friend class Collider;
+	states state = Running;
+
+	bool IsClimbing();
+	bool IsTubing();
 
 	states UpdateCharacterState(Runner* runner, Input* input);
-	void UpdateCoords(Runner * runner, Input* input, Collider* collider);
+	void UpdateCoords(Runner * runner, Input* input);
 	void RunningUpdate(Runner * runner, Input* input);
 	void FallingUpdate(Runner * runner);
-	void ClimbingUpdate(Runner * runner, Input * input, Collider* collider);
+	void DiggingUpdate(Runner* runner);
 	void UpdateRobotCoords(Robot* robot, Input* input);
 };
 

@@ -3,12 +3,22 @@
 
 bool Object::IsTop()
 {
-	return Top;
+	return Top; 
 }
 
 bool Object::IsBottom()
 {
 	return Bottom;
+}
+
+bool Object::IsSolid()
+{
+	return Solid;
+}
+
+void Object::SetSolid(bool set)
+{
+	Solid = set;
 }
 
 int Object::getx()
@@ -23,10 +33,7 @@ int Object::gety()
 
 
 
-bool Block::IsSolid()
-{
-	return Solid;
-}
+
 
 bool Ladder::IsTop()
 {
@@ -50,4 +57,20 @@ Ladder::Ladder(bool istop, bool isbottom)
 		Top = true;
 	if (isbottom)
 		Bottom = true;
+}
+
+Coin::Coin()
+{
+	Collectable = true;
+
+}
+
+Tube::Tube()
+{
+	IsTube = true;
+}
+
+Block::Block()
+{
+	Solid = true;
 }

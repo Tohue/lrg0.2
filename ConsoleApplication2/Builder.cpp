@@ -1,4 +1,3 @@
-//#include "stdafx.h"
 #include "Builder.h"
 #include <iostream>
 #include <list>
@@ -7,9 +6,13 @@
 
 void Builder::Build(char LevelStruct[])
 {
+	//if (CurrentLevel != NULL)
+		//delete CurrentLevel;
 
-	char ObjectMaps[] = {'_', '@' , '#', '1'};
-	std::set<char> a(ObjectMaps, ObjectMaps + 4);
+	CurrentLevel = new Level();
+
+	char ObjectMaps[] = {'-','R', '$', '@' , '#', '1'};
+	std::set<char> a(ObjectMaps, ObjectMaps + 7);
 
 	memset(grid, 0, sizeof grid);
 
@@ -30,6 +33,14 @@ void Builder::Build(char LevelStruct[])
 			k++;
 		}
 	}
+	while (LevelStruct[k] != NULL) k++;
+	CurrentLevel->SetLevelNumber((int)LevelStruct[k - 1]);
+
+
+	ObjectList.clear();
+
+
+	int CoinCount = 0;
 
 	//Decoding level structure
 	for (j = 0; j < 15; j++)
@@ -37,6 +48,9 @@ void Builder::Build(char LevelStruct[])
 	{
 		for (i = 0; i < 21; i++)
 		{
+
+
+
 			if (grid[i][j] == '1')
 			{
 				Object* block = new Block();
@@ -44,23 +58,22 @@ void Builder::Build(char LevelStruct[])
 				block->y = j * GRID_SIZE;
 				ObjectList.push_back(block);
 
+				if (grid[i][j - 1] == ' ')
+					{
+						Object* path = new Path();
+						path->x = i * GRID_SIZE;
+						path->y = (j - 1) * GRID_SIZE;
+					}
+
+
 			}
 
-			if (grid[i][j] == '_')
-			{
-				Object* block = new Block();
-				block->x = i * GRID_SIZE;
-				block->y = j * GRID_SIZE;
-				ObjectList.push_back(block);
-
-			}
-
-			if (grid[i][j] == '@')
+			if (grid[i][j] == 'R')
 			{
 				runner = new Runner();
 				runner->setdir(Left);
 				runner->x = i * GRID_SIZE;
-				runner->y = j * GRID_SIZE;
+				runner->y = j * GRID_SIZE + 3;
 			}
 			if (grid[i][j] == '#')
 			{
@@ -77,7 +90,37 @@ void Builder::Build(char LevelStruct[])
 
 			}
 
+			if (grid[i][j] == '$')
+			{
+				Coin* coin = new Coin();
+				coin->x = i * GRID_SIZE;
+				coin->y = j * GRID_SIZE;
+				ObjectList.push_back(coin);
+				CoinCount++;
+			}
+
+			if (grid[i][j] == '@')
+			{
+				Teleporter* teleport = new Teleporter();
+				teleport->x = i * GRID_SIZE;
+				teleport->y = j * GRID_SIZE;
+				ObjectList.push_back(teleport);
+				CurrentLevel->teleport = teleport;
+			}
+
+			if (grid[i][j] == '-')
+			{
+				Tube* tube = new Tube();
+				tube->x = i * GRID_SIZE;
+				tube->y = j * GRID_SIZE;
+				ObjectList.push_back(tube);
+			}
+
 		}
+
+		
 	}
+	CurrentLevel->SetScoreToFinish(CoinCount);
+	printf("%i", CoinCount);
 }
 

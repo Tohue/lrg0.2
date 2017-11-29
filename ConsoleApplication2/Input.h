@@ -11,6 +11,7 @@ private:
 public:
 	void Update();
 	bool KeyDown(SDL_Scancode key);
+	bool KeyDown(SDL_Keycode key);
 	bool KeyUp(SDL_Scancode key);
 	SDL_Scancode PressedKey();
 };

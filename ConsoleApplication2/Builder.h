@@ -6,8 +6,10 @@
 #include "Character.h"
 #include "Object.h"
 #include <list>
+#include "level.h"
 
 class Object;
+class Level;
 class Runner;
 
 class Builder
@@ -22,7 +24,7 @@ private:
 public:
 	Runner* runner;
 	void Build(char LevelStruct[]);
-
+	Level* CurrentLevel;
 	Object* object;
 
 	std::list<Object*> ObjectList;

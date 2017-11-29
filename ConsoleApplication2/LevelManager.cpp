@@ -13,8 +13,6 @@ int LevelManager::getlevel()
 
 void LevelManager::LoadLevel(char LevelNumber)
 {
-
-
 	std::string tmp("../levels/");
 	tmp = tmp + LevelNumber;
 	int lt = 0;
@@ -26,5 +24,15 @@ void LevelManager::LoadLevel(char LevelNumber)
 			LevelStruct[i] = lt;
 		i++;
 	}
+	LevelStruct[i] = LevelNumber;
 	file.close();
+}
+
+void LevelManager::EndLevel(Builder* builder)
+{
+	int LevelNumber = builder->CurrentLevel->GetLevelNumber();
+	delete (builder->CurrentLevel);
+	LevelNumber++;
+	LoadLevel((char)LevelNumber);
+	builder->Build(LevelStruct);
 }

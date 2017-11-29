@@ -4,7 +4,7 @@
 #include "Builder.h"
 
 //The nice little thing that helps us with sprites and inputs
-enum direction {Up, Down, Left, Right};
+enum direction {Up, Down, Left, Right, ClimbLeft, ClimbRight};
 
 //
 

@@ -16,11 +16,11 @@ Graphics::Graphics(int x, int y)
 void Graphics::UpdateGraphics()
 {
 	SDL_UpdateWindowSurface(Window);
-	//*****The renderer is unnesessary
+	//*****The renderer is unnesessary b/c we use surfaces instead of textures
 	//SDL_RenderPresent(Renderer);
 	
 	//**The following function turns the whole screen black every tick to draw everithyng again
-	SDL_FillRect(Screen, NULL, 0x000000);//16776960);
+	SDL_FillRect(Screen, NULL, 0x000000);
 	SDL_Delay(50);
 }
 void Graphics::ShutDownGraphics()
@@ -101,11 +101,15 @@ bool Graphics::DrawSprite(Sprite* img, int x, int y, int alpha)
 	SDL_Rect Area;
 	Area.x = x;
 	Area.y = y;
-
-
+	SDL_SetSurfaceBlendMode(img->surface, SDL_BLENDMODE_BLEND);
+	SDL_SetSurfaceAlphaMod(img->surface, alpha);
 	SDL_BlitSurface(img->surface, NULL, Screen, &Area);
+	SDL_SetSurfaceBlendMode(img->surface, SDL_BLENDMODE_NONE);
 	return true;
 }
+
+
+
 
 bool Graphics::DrawSprite(Sprite* img, int x, int y, int startX, int startY, int endX, int endY)
 {

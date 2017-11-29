@@ -5,35 +5,62 @@
 
 
 
+bool CharacterController::IsClimbing()
+{
+	return LadderCollision;
+}
 
+bool CharacterController::IsTubing()
+{
+	return TubeCollision;
+}
 
 states CharacterController::UpdateCharacterState(Runner* runner, Input* input)
 {
-	if (LadderCollision)
-	{
-		if (state != Climbing && IsStanding)
+
+		if (state == Digging) return Digging;
+
+		if (LadderCollision)
+		{
+			if (state != Climbing && IsStanding)
+				return Running;
+
+			else if (state == Climbing) return Climbing;
+		}
+
+
+		if (IsStanding)
 			return Running;
 
-		else if (state == Climbing) return Climbing;
+		if (TubeCollision)
+		{
+			return Tubing;
+		}
 
-	}
-	if (IsStanding)
-	return Running;
-	
-	return Falling;
-
-
+		return Falling;
 }
 
-void CharacterController::UpdateCoords(Runner * runner, Input* input, Collider* collider)
+void CharacterController::UpdateCoords(Runner * runner, Input* input)
 {
-	//mb remove this switch, it's ugly
 
 	switch (state = UpdateCharacterState(runner, input))
 	{
+	case Digging:
+	{
+		DiggingUpdate(runner);
+	}
+
+		break;
 	case Climbing:
+		{	
 		RunningUpdate(runner, input);
-		//ClimbingUpdate(runner, input, collider);
+		runner->setdir(ClimbLeft);
+		break;
+
+		}
+		
+	case Tubing:
+		RunningUpdate(runner, input);
 		break;
 	case Running:
 		RunningUpdate(runner, input);
@@ -47,26 +74,27 @@ void CharacterController::UpdateCoords(Runner * runner, Input* input, Collider* 
 }
 
 
-void CharacterController::ClimbingUpdate(Runner * runner, Input * input, Collider* collider)
-{
-
-
-}
 
 void CharacterController::RunningUpdate(Runner * runner, Input * input)
 {
+
+
 	if (input->KeyDown(SDL_SCANCODE_LCTRL))
 	{
-		runner->Speed = runner->Speed + 1;
+		state = Digging;
+		//runner->x = BottomBlock->getx();
+		//runner->y = BottomBlock->gety() - 32;
 	}
+
 
 	if (input->KeyDown(SDL_SCANCODE_LEFT))
 	{
-
-
 		if (!LeftCol)
 		{
 			runner->MoveLeft(5);
+			if (TubeCollision)
+				runner->setdir(ClimbLeft);
+			else
 			runner->setdir(Left);
 		}
 		else
@@ -81,6 +109,9 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 		if (!RightCol)
 		{
 			runner->MoveRight(5);
+			if (TubeCollision)
+			runner->setdir(ClimbRight);
+			else
 			runner->setdir(Right);
 		}
 		else
@@ -115,6 +146,13 @@ void CharacterController::RunningUpdate(Runner * runner, Input * input)
 			}
 
 		}
+		else if (TubeCollision)
+		{
+			runner->ClimbDown(5);
+			TubeCollision = false;
+			state = Running;
+		}
+			
 		else
 			state = Running;
 
@@ -131,12 +169,40 @@ void CharacterController::FallingUpdate(Runner * runner)
 		
 	else
 	{
-		runner->ClimbDown(9);
+		runner->ClimbDown(5);
 		runner->setdir(Down);
 	}
 		
 		
 }
+
+
+void CharacterController::DiggingUpdate(Runner* runner)
+{
+	if (DiggingTimer < 10)
+	{
+		if (DiggingTimer == 8)
+		{
+			if (runner->dir == Left && LeftDel != NULL)
+				LeftDel->SetSolid(false);
+			else if (runner->dir == Right && RightDel != NULL)
+				RightDel->SetSolid(false);
+		}
+		DiggingTimer++;
+	}
+	else
+	{
+		DiggingTimer = 0;
+		state = Running;
+	}
+		
+		
+
+
+
+
+}
+
 
 void CharacterController::UpdateRobotCoords(Robot * robot, Input * input)
 {

@@ -10,6 +10,7 @@
 #include "Drawer.h"
 #include "Levelmanager.h"
 #include "Collider.h"
+#include "Sound.h"
 
 class Graphics;
 //this input dec mb not needed, just for test r/n
@@ -31,9 +32,7 @@ private:
 	CharacterController* charcont;
 	LevelManager* lvlman;
 	Collider* collider;
-
-	//4test delet pls
-	Sprite* test;
+	SoundManager* soundman;
 public:
 	Game* game;
 

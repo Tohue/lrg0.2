@@ -14,21 +14,78 @@ Drawer::Drawer(Graphics* graph)
 	TestAsset[3] = graph->NewSprite(&str, 255, 0 , 255);
 	str = "../assets/Runner_Falling.bmp";
 	TestAsset[4] = graph->NewSprite(&str, 255, 0, 255);
-	str = "../assets/test_ladder.bmp";
-	TestAsset[5] = graph->NewSprite(&str);
+	str = "../assets/ladder.bmp";
+	TestAsset[5] = graph->NewSprite(&str, 255, 0, 255);
+
+	//Background 
 	str = "../assets/Background1.bmp";
 	TestAsset[6] = graph->NewSprite(&str);
+
+	str = "../assets/smoke_back.bmp";
+	TestAsset[7] = graph->NewSprite(&str, 255, 0, 255);
+	str = "../assets/smoke_front.bmp";
+	TestAsset[8] = graph->NewSprite(&str, 255, 0, 255);
+	str = "../assets/smoke_front1.bmp";
+	TestAsset[9] = graph->NewSprite(&str, 255, 0, 255);
+	str = "../assets/numbers.bmp";
+	TestAsset[10] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Chip.bmp";
+	TestAsset[11] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Teleporter.bmp";
+	TestAsset[12] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/pipe.bmp";
+	TestAsset[13] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Runner_Tubing.bmp";
+	TestAsset[14] = graph->NewSprite(&str, 255, 0, 255);
 
 }
 
 void Drawer::DrawBackgrounds(Graphics* graph)
 {
+	if (BackgroundFrame > 20) BackgroundFrame == 0;
+
 	graph->DrawSprite(TestAsset[6], 0, 0);
+
+	graph->DrawSprite(TestAsset[7], 0, 162, 150);
+	graph->DrawSprite(TestAsset[7], 320, 162, 150);
+	graph->DrawSprite(TestAsset[8], 0 + BackgroundFrame, 162, 100);
+	graph->DrawSprite(TestAsset[9], 300 - BackgroundFrame, 162, 120);
+
+	BackgroundFrame++;
 }
 
 
 void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 {
+	if (runner->getdir() == ClimbLeft)
+	{
+		if (input->KeyDown(SDL_SCANCODE_LEFT))
+		{
+			if (TubingFrame > 1) TubingFrame = 0;
+			graph->DrawSprite(TestAsset[14], runner->getx(), runner->gety(), TubingFrame * 32, 0, 32, 32);
+			TubingFrame++;
+		}
+		else
+			graph->DrawSprite(TestAsset[14], runner->getx(), runner->gety(), 0, 0, 32, 32);
+
+	}
+		
+	if (runner->getdir() == ClimbRight)
+	{
+		if (input->KeyDown(SDL_SCANCODE_RIGHT))
+		{
+			if (TubingFrame > 1) TubingFrame = 0;
+			graph->DrawSprite(TestAsset[14], runner->getx(), runner->gety(), TubingFrame * 32, 0, 32, 32);
+			TubingFrame++;
+		}
+		else
+			graph->DrawSprite(TestAsset[14], runner->getx(), runner->gety(), 0, 0, 32, 32);
+
+	}
 
 	if (runner->getdir() == Left)
 	{
@@ -83,13 +140,45 @@ void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 }
 
 
-void Drawer::UpdateSprite(Object* object, Graphics* graph)
+void Drawer::UpdateSprite(Object* object, Graphics* graph, Builder * builder)
 {
+	if (object == builder->CurrentLevel->teleport)
+	{
+		if (builder->CurrentLevel->teleport->IsOn)
+			graph->DrawSprite(TestAsset[12], object->getx(), object->gety());
+	}
+	else if (object->IsTube)
+	graph->DrawSprite(TestAsset[13], object->getx(), object->gety());
 
-
-	if (object->Climbable == true)
+	else if (object->Climbable == true)
 	graph->DrawSprite(TestAsset[5], object->getx(), object->gety());
-	else
+	else if (object->Collectable == true)
+		graph->DrawSprite(TestAsset[11], object->getx(), object->gety());
+	else if (object->IsSolid())
 	graph->DrawSprite(TestAsset[0], object->getx(), object->gety());
+
+
+}
+
+void Drawer::UpdateScoreSprite(Graphics* graph, Builder * builder)
+{
+	int Score;
+	float mod1, mod2, mod3;
+	Score = (builder->CurrentLevel->GetCurrentScore() * 100);
+	mod1 = (Score / 100);
+	mod2 = (Score % 100) / 10;
+	mod3 = (Score % 10);
+	if (mod1 == 0)
+		graph->DrawSprite(TestAsset[10], 0, 16, 144, 0, 16, 16);
+	else
+		graph->DrawSprite(TestAsset[10], 0, 16, mod1 * 16 - 16, 0, 16, 16);
+	if (mod2 == 0)
+		graph->DrawSprite(TestAsset[10], 16, 16, 144, 0, 16, 16);
+	else
+		graph->DrawSprite(TestAsset[10], 16, 16, mod2 * 16 - 16, 0, 16, 16);
+	if (mod3 == 0)
+		graph->DrawSprite(TestAsset[10], 32, 16, 144, 0, 16, 16);
+	else
+		graph->DrawSprite(TestAsset[10], 32, 16, mod3 * 16 - 16, 0, 16, 16);
 
 }
