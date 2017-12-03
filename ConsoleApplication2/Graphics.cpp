@@ -132,3 +132,27 @@ bool Graphics::DrawSprite(Sprite* img, int x, int y, int startX, int startY, int
 	return true;
 }
 
+
+bool Graphics::DrawSprite(Sprite* img, int x, int y, int startX, int startY, int endX, int endY, int alpha)
+{
+	if (Screen == NULL || img->surface == NULL) {
+		return false;
+
+	}
+
+	SDL_Rect Area;
+	Area.x = x;
+	Area.y = y;
+
+	SDL_Rect SrcArea;
+	SrcArea.x = startX;
+	SrcArea.y = startY;
+	SrcArea.w = endX;
+	SrcArea.h = endY;
+	SDL_SetSurfaceBlendMode(img->surface, SDL_BLENDMODE_BLEND);
+	SDL_SetSurfaceAlphaMod(img->surface, alpha);
+	SDL_BlitSurface(img->surface, &SrcArea, Screen, &Area);
+	SDL_SetSurfaceBlendMode(img->surface, SDL_BLENDMODE_NONE);
+	return true;
+}
+

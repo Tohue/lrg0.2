@@ -18,7 +18,7 @@ Drawer::Drawer(Graphics* graph)
 	TestAsset[5] = graph->NewSprite(&str, 255, 0, 255);
 
 	//Background 
-	str = "../assets/Background1.bmp";
+	str = "../assets/background/Background1.bmp";
 	TestAsset[6] = graph->NewSprite(&str);
 
 	str = "../assets/smoke_back.bmp";
@@ -33,7 +33,7 @@ Drawer::Drawer(Graphics* graph)
 	str = "../assets/Chip.bmp";
 	TestAsset[11] = graph->NewSprite(&str, 255, 0, 255);
 
-	str = "../assets/Teleporter.bmp";
+	str = "../assets/Teleporter_Broken.bmp";
 	TestAsset[12] = graph->NewSprite(&str, 255, 0, 255);
 
 	str = "../assets/pipe.bmp";
@@ -42,25 +42,78 @@ Drawer::Drawer(Graphics* graph)
 	str = "../assets/Runner_Tubing.bmp";
 	TestAsset[14] = graph->NewSprite(&str, 255, 0, 255);
 
+	str = "../assets/Runner_Dig_Left.bmp";
+	TestAsset[15] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Runner_Dig_Right.bmp";
+	TestAsset[16] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Teleporter_Working.bmp";
+	TestAsset[17] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/effects/Teleport_Light.bmp";
+	FXAsset[0] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/background/Menu_Background.bmp";
+	TestAsset[18] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/background/Menu_Character.bmp";
+	TestAsset[19] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/background/Menu_Title.bmp";
+	TestAsset[20] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/background/Button_Play.bmp";
+	TestAsset[21] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/background/Button_Play_Active.bmp";
+	TestAsset[22] = graph->NewSprite(&str, 255, 0, 255);
+
 }
 
-void Drawer::DrawBackgrounds(Graphics* graph)
+void Drawer::DrawBackgrounds(Graphics* graph, LevelManager* lvlman)
 {
-	if (BackgroundFrame > 20) BackgroundFrame == 0;
+	if (lvlman->st == InMenu)
+	{
 
-	graph->DrawSprite(TestAsset[6], 0, 0);
+		graph->DrawSprite(TestAsset[18], 0, 0);
+		graph->DrawSprite(TestAsset[19], 0, 0);
+		graph->DrawSprite(TestAsset[20], 0, 0);
+	}
+	else
+	{
+		if (BackgroundFrame > 20) BackgroundFrame = 0;
 
-	graph->DrawSprite(TestAsset[7], 0, 162, 150);
-	graph->DrawSprite(TestAsset[7], 320, 162, 150);
-	graph->DrawSprite(TestAsset[8], 0 + BackgroundFrame, 162, 100);
-	graph->DrawSprite(TestAsset[9], 300 - BackgroundFrame, 162, 120);
+		graph->DrawSprite(TestAsset[6], 0, 0);
 
-	BackgroundFrame++;
+		graph->DrawSprite(TestAsset[7], 0, 162, 150);
+		graph->DrawSprite(TestAsset[7], 320, 162, 150);
+		graph->DrawSprite(TestAsset[8], 0 + BackgroundFrame, 162, 100);
+		graph->DrawSprite(TestAsset[9], 300 - BackgroundFrame, 162, 120);
+
+		BackgroundFrame++;
+	}
+
 }
 
 
 void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 {
+
+	if (runner->getdir() == DigLeft)
+	{
+		if (LeftDigFrame > 4) LeftDigFrame = 0;
+		graph->DrawSprite(TestAsset[15], runner->getx(), runner->gety(), LeftDigFrame * 32, 0, 32, 32);
+		LeftDigFrame++;
+	}
+
+	if (runner->getdir() == DigRight)
+	{
+		if (RightDigFrame > 4) RightDigFrame = 0;
+		graph->DrawSprite(TestAsset[16], runner->getx(), runner->gety(), RightDigFrame * 32, 0, 32, 32);
+		RightDigFrame++;
+	}
+
 	if (runner->getdir() == ClimbLeft)
 	{
 		if (input->KeyDown(SDL_SCANCODE_LEFT))
@@ -139,12 +192,41 @@ void Drawer::UpdateSprite(Runner * runner, Graphics * graph, Input* input)
 
 }
 
+void Drawer::UpdateSprite(Builder * builder, Graphics* graph)
+{
+
+	if (builder->menu != NULL)
+		for (std::list<Button*>::iterator it = builder->menu->ButtonList.begin(); it != builder->menu->ButtonList.end(); ++it)
+			if ((*it)->state == Passive)
+			{
+				if ((*it)->GetNumber() == 0) graph->DrawSprite(TestAsset[21], (*it)->Getx(), (*it)->Gety());
+				if ((*it)->GetNumber() == 1) graph->DrawSprite(TestAsset[21], (*it)->Getx(), (*it)->Gety());
+				if ((*it)->GetNumber() == 2) graph->DrawSprite(TestAsset[21], (*it)->Getx(), (*it)->Gety());
+			}
+			else
+				{
+					if ((*it)->GetNumber() == 0) graph->DrawSprite(TestAsset[22], (*it)->Getx(), (*it)->Gety());
+					if ((*it)->GetNumber() == 1) graph->DrawSprite(TestAsset[22], (*it)->Getx(), (*it)->Gety());
+					if ((*it)->GetNumber() == 2) graph->DrawSprite(TestAsset[22], (*it)->Getx(), (*it)->Gety());
+				}
+			
+
+}
+
 
 void Drawer::UpdateSprite(Object* object, Graphics* graph, Builder * builder)
 {
 	if (object == builder->CurrentLevel->teleport)
 	{
 		if (builder->CurrentLevel->teleport->IsOn)
+		{
+			graph->DrawSprite(TestAsset[17], object->getx(), object->gety());
+			if (LightFrame > 2) LightFrame = 0;
+			graph->DrawSprite(FXAsset[0], object->getx() - 32, object->gety() - 32, LightFrame * 96, 0, 96, 96, 100);
+			LightFrame++;
+		}
+
+		else
 			graph->DrawSprite(TestAsset[12], object->getx(), object->gety());
 	}
 	else if (object->IsTube)

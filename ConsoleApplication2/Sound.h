@@ -21,12 +21,13 @@ class SoundManager
 
 private:
 	bool playing = false;
-
 public:
 	Sound* Sounds[10];
+	Mix_Music* Music[10];
 	SoundManager();
 	Sound* NewSound(std::string* file);
-	bool PlaySound(Sound* sound);
+	bool PlaySound(Sound* sound, int channel);
+	void PlaySpecificSound(int number);
 	void UpdateSounds(Builder* builder, CharacterController* charcont, Input* input);
 };
 

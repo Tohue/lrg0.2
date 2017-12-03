@@ -38,26 +38,30 @@ bool Collider::CollisionCheck(Character * character, Object* obj, Builder* build
 
 bool Collider::CheckStanding(Runner* runner, Object* obj)
 {
-	float ax, ay;
-	ax = float(runner->getx());
-	ay = float(runner->gety());
-	ax = (floor(ax / 32)) * 32;
-	ay = ((floor(ay / 32)) + 1) * 32;
-	
-	if (((obj->getx() == (int)ax) && (obj->gety() == (int)ay)) && obj->IsSolid())
+	int ax, ay;
+	ax = (runner->getx());
+	ay = (runner->gety());
+	//ax = (floor(ax / 32)) * 32;
+	ax = (ax / 32) * 32;
+	//ay = ((floor(ay / 32)) + 1) * 32;
+	ay = ((ay / 32) + 1) * 32;
+	if (((obj->getx() == ax) && (obj->gety() == ay || obj->gety() == ay - 1 || obj->gety() == ay + 1)) && obj->IsSolid())
 	{
-		if ((floor(Last_standing_X / 32)) != floor(runner->getx() / 32)) Last_standing_X = obj->getx();
-		if (((runner->getx() + 32) >= (int)ax) || (runner->getx() <= ((int)ax + 32)))
+		if (((Last_standing_X / 32)) != (runner->getx() / 32))
+		{
+			Last_standing_X = obj->getx();
+			Last_Standing_Y = obj->gety();
+		}
+		if (((runner->getx() + 32) >= ax) && (runner->getx() <= (ax + 32)))
 			return true;
 	}
-	else if ((runner->getx() + 32 >= Last_standing_X) && (runner->getx() + 32 <= Last_standing_X + 32))
-		return true;
+
 	return false;
 }
 
 
 
-void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman)
+void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman, SoundManager* soundman)
 {
 	bool CheckClear = false;
 	Object* ToRemove = NULL;
@@ -65,7 +69,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 	while (++it != builder->ObjectList.end())
 	{
 		//First off we need to check if there is any block under the legs thru the gridding method
-		if (((CheckStanding(builder->runner, *it)) || (charcont->state == Climbing)))
+		if ((CheckStanding(builder->runner, *it)) || (charcont->state == Climbing))
 		{
 			StandChecker = true;
 			if (charcont->state == Digging)
@@ -74,9 +78,9 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 				charcont->LeftDel = FindPreviousBlock((*it), builder->ObjectList);
 				charcont->RightDel = FindNextBlock((*it), builder->ObjectList);
 			}
-
 		}
-
+		else if (((builder->runner->getx() + 25 >= Last_standing_X) && (builder->runner->getx() + 25 <= Last_standing_X + 32)) && (Last_Standing_Y == (builder->runner->gety() / 32 + 1) * 32))
+			StandChecker = true;
 		//If the collision happens
 		if (CollisionCheck(builder->runner, *it, builder))
 			//We tell charcont if there are some ladders to climb
@@ -91,9 +95,15 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 			else if ((*it)->Collectable)
 			{  
 
+				soundman->PlaySpecificSound(2);
+
 				ToRemove = (*it);
 				if (builder->CurrentLevel->UpdateValues() == 1)
+				{
 					builder->CurrentLevel->teleport->IsOn = true;
+					soundman->PlaySpecificSound(3);
+				}
+
 			}
 
 			else if ((*it)->IsTube)
@@ -109,6 +119,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 				if (builder->CurrentLevel->teleport->IsOn)
 				{
 					CheckClear = true;
+					soundman->PlaySpecificSound(4);
 				}
 
 			}
@@ -116,7 +127,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 
 		//Finally we'll try avoid the blocks we don't want to get into
 			
-			else //if ((*it)->IsSolid())
+			else
 			{
 				if ((builder->runner->getx() + 32 >= (*it)->getx()) && (builder->runner->getx() + 32 <= (*it)->getx() + 32))
 				{
@@ -160,7 +171,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 	{
 		SDL_Delay(1000);
 		//show level changing sequence or smth like that
-		lvlman->EndLevel(builder);
+		lvlman->NextLevel(builder);
 	}
 
 	StandChecker = false;
@@ -174,7 +185,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 Object* Collider::FindPreviousBlock(Object* obj, std::list<Object*> list)
 {
 	for (std::list<Object*>::iterator it = list.begin(); it != list.end(); ++it)
-		if (((*it)->getx() == obj->getx() - 32) && ((*it)->gety() == obj->gety()))
+		if (((*it)->getx() == obj->getx() - 32) && ((*it)->gety() == obj->gety()) && !(obj->Climbable))
 			return (*it);
 
 	return NULL;
@@ -183,7 +194,7 @@ Object* Collider::FindPreviousBlock(Object* obj, std::list<Object*> list)
 Object* Collider::FindNextBlock(Object* obj, std::list<Object*> list)
 {
 	for (std::list<Object*>::iterator it = list.begin(); it != list.end(); ++it)
-		if (((*it)->getx() == obj->getx() + 32) && ((*it)->gety() == obj->gety()))
+		if (((*it)->getx() == obj->getx() + 32) && ((*it)->gety() == obj->gety()) && !(obj->Climbable))
 			return (*it);
 
 	return NULL;

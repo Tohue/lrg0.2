@@ -4,6 +4,13 @@
 #include <string>
 #include <set>
 
+void Builder::Destroy()
+{
+	ObjectList.clear();
+	delete(runner);
+
+}
+
 void Builder::Build(char LevelStruct[])
 {
 	//if (CurrentLevel != NULL)
@@ -37,7 +44,7 @@ void Builder::Build(char LevelStruct[])
 	CurrentLevel->SetLevelNumber((int)LevelStruct[k - 1]);
 
 
-	ObjectList.clear();
+	if (CurrentLevel == NULL) Destroy();
 
 
 	int CoinCount = 0;
@@ -121,6 +128,12 @@ void Builder::Build(char LevelStruct[])
 		
 	}
 	CurrentLevel->SetScoreToFinish(CoinCount);
-	printf("%i", CoinCount);
+
+}
+
+void Builder::BuildMenu()
+{
+	if (menu != NULL) delete(menu);
+	menu = new Menu();
 }
 

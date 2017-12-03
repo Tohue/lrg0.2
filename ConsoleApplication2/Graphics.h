@@ -34,6 +34,7 @@ public:
 	bool DrawSprite(Sprite* img, int x, int y);
 	bool DrawSprite(Sprite * img, int x, int y, int alpha);
 	bool DrawSprite(Sprite* img, int x, int y, int startX, int startY, int endX, int endY);
+	bool DrawSprite(Sprite * img, int x, int y, int startX, int startY, int endX, int endY, int alpha);
 
 };
 

@@ -181,17 +181,26 @@ void CharacterController::DiggingUpdate(Runner* runner)
 {
 	if (DiggingTimer < 10)
 	{
+		if (DiggingTimer == 1)
+		{
+			if (runner->dir == Left) runner->dir = DigLeft;
+			if (runner->dir == Right) runner->dir = DigRight;
+			runner->x = BottomBlock->getx();
+			runner->y = BottomBlock->gety() - 30;
+		}
 		if (DiggingTimer == 8)
 		{
-			if (runner->dir == Left && LeftDel != NULL)
+			if (runner->dir == DigLeft && LeftDel != NULL && !LeftDel->Climbable)
 				LeftDel->SetSolid(false);
-			else if (runner->dir == Right && RightDel != NULL)
+			else if (runner->dir == DigRight && RightDel != NULL && !RightDel->Climbable)
 				RightDel->SetSolid(false);
 		}
 		DiggingTimer++;
 	}
 	else
 	{
+		if (runner->dir == DigLeft) runner->dir = Left;
+		if (runner->dir == DigRight) runner->dir = Right;
 		DiggingTimer = 0;
 		state = Running;
 	}

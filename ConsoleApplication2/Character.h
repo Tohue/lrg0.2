@@ -4,7 +4,7 @@
 #include "Builder.h"
 
 //The nice little thing that helps us with sprites and inputs
-enum direction {Up, Down, Left, Right, ClimbLeft, ClimbRight};
+enum direction {Up, Down, Left, Right, ClimbLeft, ClimbRight, DigLeft, DigRight};
 
 //
 
@@ -30,8 +30,6 @@ public:
 	void ClimbUp(int spd);
 	void ClimbDown(int spd);
 };
-
-//NEED TO DECIDE SHOULD I KEEP SO MANY METHODS IN 'PUBLIC'
 
 class Runner : public Character
 {

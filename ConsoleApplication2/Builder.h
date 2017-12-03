@@ -7,10 +7,13 @@
 #include "Object.h"
 #include <list>
 #include "level.h"
+#include "Menu.h"
+
 
 class Object;
 class Level;
 class Runner;
+class Menu;
 
 class Builder
 {
@@ -23,8 +26,11 @@ private:
 
 public:
 	Runner* runner;
+	void Destroy();
 	void Build(char LevelStruct[]);
+	void BuildMenu();
 	Level* CurrentLevel;
+	Menu* menu;
 	Object* object;
 
 	std::list<Object*> ObjectList;

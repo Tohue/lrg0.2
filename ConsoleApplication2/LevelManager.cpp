@@ -11,8 +11,20 @@ int LevelManager::getlevel()
 	return CurrentLevel;
 }
 
+void LevelManager::GoToMenu(Builder * builder)
+{
+	if (builder->CurrentLevel != NULL)
+	EndLevel(builder);
+
+	st = InMenu;
+
+}
+
 void LevelManager::LoadLevel(char LevelNumber)
 {
+
+	if (st == InMenu) st = Playing;
+
 	std::string tmp("../levels/");
 	tmp = tmp + LevelNumber;
 	int lt = 0;
@@ -30,8 +42,16 @@ void LevelManager::LoadLevel(char LevelNumber)
 
 void LevelManager::EndLevel(Builder* builder)
 {
-	int LevelNumber = builder->CurrentLevel->GetLevelNumber();
+
 	delete (builder->CurrentLevel);
+	builder->Destroy();
+
+}
+
+void LevelManager::NextLevel(Builder * builder)
+{
+	int LevelNumber = builder->CurrentLevel->GetLevelNumber();
+	EndLevel(builder);
 	LevelNumber++;
 	LoadLevel((char)LevelNumber);
 	builder->Build(LevelStruct);

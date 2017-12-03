@@ -6,11 +6,14 @@
 #include "levelmanager.h"
 #include "Sound.h"
 
+class SoundManager;
+
 class Collider
 
 {
 private:
 	int Last_standing_X;
+	int Last_Standing_Y;
 	bool LadderChecker = false;
 	bool StandChecker = true;
 	bool TubeChecker = false;
@@ -19,7 +22,7 @@ public:
 
 	bool CollisionCheck(Character* character, Object* obj, Builder* builder);
 	bool CheckStanding(Runner* runner, Object* obj);
-	void UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager* lvlman);
+	void UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager* lvlman, SoundManager * soundman);
 
 	Object* FindPreviousBlock(Object * obj, std::list<Object*> list);
 
