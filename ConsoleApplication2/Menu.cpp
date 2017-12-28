@@ -17,7 +17,7 @@ Menu::Menu()
 	}
 }
 
-void Menu::UpdateMenu(Input * input, Builder* builder, LevelManager* lvlman)
+void Menu::UpdateMenu(Input * input, Builder* builder, LevelManager* lvlman, PathFinder * pathf)
 {
 	int numb;
 	for (std::list<Button*>::iterator it = ButtonList.begin(); it != ButtonList.end(); ++it)
@@ -61,6 +61,8 @@ void Menu::UpdateMenu(Input * input, Builder* builder, LevelManager* lvlman)
 		{
 			lvlman->LoadLevel('1');
 			builder->Build(lvlman->LevelStruct);
+			pathf->GetPath(builder->PathList);
+
 		}
 
 	}

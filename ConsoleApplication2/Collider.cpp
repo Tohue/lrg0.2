@@ -36,6 +36,43 @@ bool Collider::CollisionCheck(Character * character, Object* obj, Builder* build
 }
 
 
+bool Collider::CollisionCheck(Character * character, Robot* robot, Builder* builder)
+{
+	Character* A = character;
+
+	int leftA, leftB;
+	int rightA, rightB;
+	int topA, topB;
+	int bottomA, bottomB;
+
+	leftA = A->getx();
+	rightA = A->getx() + 32;
+	topA = A->gety();
+	bottomA = A->gety() + 32;
+
+	Robot* B = robot;
+	leftB = B->getx();
+	rightB = B->getx() + 32;
+	topB = B->gety();
+	bottomB = B->gety() + 32;
+
+	if ((bottomA < topB) || (topA > bottomB) || (rightA < leftB) || (leftA > rightB))
+	{
+		return false;
+
+	}
+
+	if ((topB / 32) == ((bottomA / 32) + 1))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+
+
+
 bool Collider::CheckStanding(Runner* runner, Object* obj)
 {
 	int ax, ay;
@@ -61,7 +98,7 @@ bool Collider::CheckStanding(Runner* runner, Object* obj)
 
 
 
-void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman, SoundManager* soundman)
+void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman, SoundManager* soundman, PathFinder* pathf)
 {
 	bool CheckClear = false;
 	Object* ToRemove = NULL;
@@ -124,7 +161,6 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 
 			}
 
-
 		//Finally we'll try avoid the blocks we don't want to get into
 			
 			else
@@ -148,6 +184,25 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 			}
 
 	}
+
+	bool stop = false;
+	for (std::list<Robot*>::iterator it1 = builder->EnemyList.begin(); it1 != builder->EnemyList.end(); ++it1)
+	{
+		if (CollisionCheck(builder->runner, (*it1), builder) && !builder->runner->GodMode)
+			stop = true;
+
+	}
+
+
+	if (stop)
+	{
+		soundman->StopSounds();
+		soundman->PlaySpecificSound(5);
+		SDL_Delay(1000);
+		lvlman->GoToMenu(builder);
+	}
+
+
 	if (ToRemove != NULL)
 		delete(ToRemove);
 	if (LadderChecker)
@@ -161,17 +216,17 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 		charcont->TubeCollision = true;
 	else
 		charcont->TubeCollision = false;
-
 		
 
 
 	charcont->UpdateCoords(builder->runner, input);
 
+
 	if (CheckClear)
 	{
 		SDL_Delay(1000);
 		//show level changing sequence or smth like that
-		lvlman->NextLevel(builder);
+		lvlman->NextLevel(builder, pathf);
 	}
 
 	StandChecker = false;

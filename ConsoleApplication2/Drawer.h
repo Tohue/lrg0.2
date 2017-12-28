@@ -19,6 +19,12 @@ private:
 	int RightFrame = 0;
 	int LeftFrame = 0;
 	int ClimbFrame = 0;
+
+	int rRightFrame = 0;
+	int rLeftFrame = 0;
+	int rClimbFrame = 0;
+
+
 	int BackgroundFrame = 0;
 	int TubingFrame = 0;
 	int LeftDigFrame = 0;

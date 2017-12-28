@@ -5,9 +5,10 @@
 #include "input.h"
 #include "builder.h"
 #include "Levelmanager.h"
-
+#include "Pathfinder.h"
 
 class LevelManager;
+class PathFinder;
 
 enum state { Active, Passive };
 class Button
@@ -33,7 +34,7 @@ private:
 public:
 	std::list<Button*> ButtonList;
 	Menu();
-	void UpdateMenu(Input* input, Builder* builder, LevelManager* lvlman);
+	void UpdateMenu(Input* input, Builder* builder, LevelManager* lvlman, PathFinder * pathf);
 };
 
 

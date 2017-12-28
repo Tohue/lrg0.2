@@ -33,6 +33,8 @@ private:
 	LevelManager* lvlman;
 	Collider* collider;
 	SoundManager* soundman;
+	PathFinder* pathf;
+
 public:
 	Game* game;
 

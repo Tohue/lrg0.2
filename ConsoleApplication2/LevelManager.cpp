@@ -13,10 +13,16 @@ int LevelManager::getlevel()
 
 void LevelManager::GoToMenu(Builder * builder)
 {
+
 	if (builder->CurrentLevel != NULL)
-	EndLevel(builder);
+	{
+		EndLevel(builder);
+	}
+	
+	
 
 	st = InMenu;
+
 
 }
 
@@ -48,11 +54,12 @@ void LevelManager::EndLevel(Builder* builder)
 
 }
 
-void LevelManager::NextLevel(Builder * builder)
+void LevelManager::NextLevel(Builder * builder, PathFinder * pathf)
 {
 	int LevelNumber = builder->CurrentLevel->GetLevelNumber();
 	EndLevel(builder);
 	LevelNumber++;
 	LoadLevel((char)LevelNumber);
 	builder->Build(LevelStruct);
+	pathf->GetPath(builder->PathList);
 }

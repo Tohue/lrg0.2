@@ -1,0 +1,32 @@
+﻿  Builder.cpp
+Builder.cpp(182): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
+  Character.cpp
+Character.cpp(79): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
+  CharacterController.cpp
+CharacterController.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Collider.cpp
+Collider.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Drawer.cpp
+Drawer.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Graphics.cpp
+Graphics.cpp(159): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
+  Level.cpp
+Level.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  LevelManager.cpp
+LevelManager.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Menu.cpp
+Menu.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Object.cpp
+Object.cpp(77): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
+  PathFinder.cpp
+PathFinder.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Sound.cpp
+Sound.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Sprite.cpp
+Sprite.cpp(12): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.
+  Input.cpp
+Input.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  main.cpp
+main.cpp(1): fatal error C1083: Не удается открыть файл предкомпилированный заголовок: x64\Release\Lode Runner.pch: No such file or directory,
+  Game.cpp
+Game.cpp(87): fatal error C1010: непредвиденный конец файла во время поиска предкомпилированного заголовка. Возможно, вы забыли добавить директиву "#include "stdafx.h"" в источник.

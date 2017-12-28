@@ -1,26 +1,3 @@
-﻿  LevelManager.cpp
-  Game.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\game.cpp(54): warning C4551: в вызове функции отсутствует список аргументов
-  Drawer.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(250): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(251): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(252): warning C4244: =: преобразование "int" в "float", возможна потеря данных
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(256): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(260): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-c:\users\user\source\repos\lode runner\consoleapplication2\drawer.cpp(264): warning C4244: аргумент: преобразование "float" в "int", возможна потеря данных
-  Создание кода...
-  Компиляция...
-  main.cpp
-  Sound.cpp
-  Object.cpp
-  Menu.cpp
-  Level.cpp
-  Graphics.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\graphics.cpp(66): warning C4477: "printf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "std::string *"
-  Collider.cpp
-  CharacterController.cpp
-  Character.cpp
-  Builder.cpp
-c:\users\user\source\repos\lode runner\consoleapplication2\builder.cpp(27): warning C4101: m: неиспользованная локальная переменная
-  Создание кода...
+﻿  Builder.cpp
+c:\users\user\source\repos\lode runner\consoleapplication2\builder.cpp(29): warning C4101: m: неиспользованная локальная переменная
   ConsoleApplication2.vcxproj -> C:\Users\user\source\repos\Lode Runner\x64\Debug\Lode Runner.exe

@@ -29,6 +29,10 @@ public:
 	void MoveRight(int spd);
 	void ClimbUp(int spd);
 	void ClimbDown(int spd);
+
+
+	//FOR TESTS:
+	bool GodMode = false;
 };
 
 class Runner : public Character
@@ -42,9 +46,15 @@ public:
 
 class Robot : public Character
 {
+private:
+	bool IsReady = true;
+	int PrevCoords[2];
 
-
-
-
+public:
+	bool GetReady();
+	void SetReady(bool ready);
+	int GetPrevX();
+	int GetPrevY();
+	void SetPrevCoords(int x, int y);
 };
 #endif

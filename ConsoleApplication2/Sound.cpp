@@ -22,6 +22,9 @@ SoundManager::SoundManager()
 	str = "../sounds/Level_Clear.wav";
 	Sounds[4] = NewSound(&str);
 
+	str = "../sounds/Failed.wav";
+	Sounds[5] = NewSound(&str);
+
 	str = "../sounds/music/1.mp3";
 	Music[0] = Mix_LoadMUS((&str)->c_str());
 
@@ -44,6 +47,18 @@ bool SoundManager::PlaySound(Sound* sound, int channel)
 	return true;
 }
 
+void SoundManager::StopSounds()
+{
+	Mix_HaltMusic();
+	int i;
+	for (i = 0; i < 3; i++)
+	{
+		if (Mix_Playing(i))Mix_HaltChannel(i);
+
+	}
+
+}
+
 
 void SoundManager::PlaySpecificSound(int number)
 {
@@ -56,6 +71,7 @@ void SoundManager::PlaySpecificSound(int number)
 void SoundManager::UpdateSounds(Builder* builder, CharacterController* charcont, Input* input)
 {
 	if (Mix_PlayingMusic() == 0) Mix_PlayMusic(Music[0], -1);
+
 	if (charcont->IsClimbing() &&  (input->KeyDown(SDL_SCANCODE_UP) || input->KeyDown(SDL_SCANCODE_DOWN)))
 	{
 			if (!playing)

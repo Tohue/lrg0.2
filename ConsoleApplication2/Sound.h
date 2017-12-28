@@ -6,6 +6,9 @@
 #include "charactercontroller.h"
 #include <string>
 
+
+class CharacterController;
+
 class Sound
 {
 private:
@@ -27,6 +30,7 @@ public:
 	SoundManager();
 	Sound* NewSound(std::string* file);
 	bool PlaySound(Sound* sound, int channel);
+	void StopSounds();
 	void PlaySpecificSound(int number);
 	void UpdateSounds(Builder* builder, CharacterController* charcont, Input* input);
 };

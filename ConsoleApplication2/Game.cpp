@@ -23,6 +23,7 @@ int Game::Run(int x, int y)
 	soundman = new SoundManager();
 	drawer = new Drawer(graph);
 	lvlman = new LevelManager();
+	pathf = new PathFinder();
 
 
 	lvlman->GoToMenu(builder);
@@ -36,17 +37,23 @@ int Game::Run(int x, int y)
 
 		if (lvlman->st != InMenu)
 		{
-			collider->UpdateCollisions(builder, charcont, GetInput(), lvlman, soundman);
 			soundman->UpdateSounds(builder, charcont, input);
+			collider->UpdateCollisions(builder, charcont, GetInput(), lvlman, soundman, pathf);
 			for (std::list<Object*>::iterator it = builder->ObjectList.begin(); it != builder->ObjectList.end(); ++it)
 				drawer->UpdateSprite(*it, graph, builder);
+			for (std::list<Robot*>::iterator it1 = builder->EnemyList.begin(); it1 != builder->EnemyList.end(); ++it1)
+			{
+				charcont->UpdateRobotCoords((*it1), input, builder->runner, pathf);
+				drawer->UpdateSprite(*it1, graph);
+			}
+				
 			drawer->UpdateSprite(builder->runner, GetGraphics(), GetInput());
 			drawer->UpdateScoreSprite(graph, builder);
 		}
 		else
 		{
 			drawer->UpdateSprite(builder, graph);
-			builder->menu->UpdateMenu(input, builder,lvlman);
+			builder->menu->UpdateMenu(input, builder,lvlman, pathf);
 		}
 		
 		graph->UpdateGraphics();

@@ -8,9 +8,15 @@
 #include "Builder.h"
 #include "Object.h"
 #include "Collider.h"
+#include "PathFinder.h"
 
+
+class Object;
+class Runner;
+class Robot;
 
 //Enum for checing what's going on with main character
+
 
 enum states { Running, Digging, Falling, Climbing, Tubing };
 
@@ -42,7 +48,8 @@ public:
 	void RunningUpdate(Runner * runner, Input* input);
 	void FallingUpdate(Runner * runner);
 	void DiggingUpdate(Runner* runner);
-	void UpdateRobotCoords(Robot* robot, Input* input);
+	void UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf);
+	void MoveRobot(Robot* robot, int x, int y);
 };
 
 #endif

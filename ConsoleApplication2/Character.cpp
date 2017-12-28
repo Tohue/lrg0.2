@@ -50,3 +50,29 @@ Runner::Runner()
 {
 	Speed = 5;
 }
+
+bool Robot::GetReady()
+{
+	return IsReady;
+}
+
+void Robot::SetReady(bool ready)
+{
+	IsReady = ready;
+}
+
+int Robot::GetPrevX()
+{
+	return PrevCoords[0];
+}
+
+int Robot::GetPrevY()
+{
+	return PrevCoords[1];
+}
+
+void Robot::SetPrevCoords(int x, int y)
+{
+	PrevCoords[0] = x;
+	PrevCoords[1] = y;
+}

@@ -8,12 +8,16 @@
 #include <list>
 #include "level.h"
 #include "Menu.h"
+#include "PathFinder.h"
+
 
 
 class Object;
+class Path;
 class Level;
 class Runner;
 class Menu;
+class Robot;
 
 class Builder
 {
@@ -34,6 +38,8 @@ public:
 	Object* object;
 
 	std::list<Object*> ObjectList;
+	std::list<Path*> PathList;
+	std::list<Robot*> EnemyList;
 
 };
 

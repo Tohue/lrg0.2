@@ -7,6 +7,8 @@
 void Builder::Destroy()
 {
 	ObjectList.clear();
+	PathList.clear();
+	EnemyList.clear();
 	delete(runner);
 
 }
@@ -18,8 +20,8 @@ void Builder::Build(char LevelStruct[])
 
 	CurrentLevel = new Level();
 
-	char ObjectMaps[] = {'-','R', '$', '@' , '#', '1'};
-	std::set<char> a(ObjectMaps, ObjectMaps + 7);
+	char ObjectMaps[] = {'-','R', '$', '@' , '#', '1', '&', '_'};
+	std::set<char> a(ObjectMaps, ObjectMaps + 9);
 
 	memset(grid, 0, sizeof grid);
 
@@ -57,6 +59,28 @@ void Builder::Build(char LevelStruct[])
 		{
 
 
+			if (grid[i][j] == '_')
+			{
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j) * GRID_SIZE;
+				PathList.push_back(path);
+			}
+
+
+			if (grid[i][j] == '&')
+			{
+				Robot* robot = new Robot();
+				robot->x = i * GRID_SIZE;
+				robot->y = j * GRID_SIZE;
+				EnemyList.push_back(robot);
+
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j) * GRID_SIZE;
+				PathList.push_back(path);
+
+			}
 
 			if (grid[i][j] == '1')
 			{
@@ -64,15 +88,6 @@ void Builder::Build(char LevelStruct[])
 				block->x = i * GRID_SIZE;
 				block->y = j * GRID_SIZE;
 				ObjectList.push_back(block);
-
-				if (grid[i][j - 1] == ' ')
-					{
-						Object* path = new Path();
-						path->x = i * GRID_SIZE;
-						path->y = (j - 1) * GRID_SIZE;
-					}
-
-
 			}
 
 			if (grid[i][j] == 'R')
@@ -81,6 +96,11 @@ void Builder::Build(char LevelStruct[])
 				runner->setdir(Left);
 				runner->x = i * GRID_SIZE;
 				runner->y = j * GRID_SIZE + 3;
+
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j)* GRID_SIZE;
+				PathList.push_back(path);
 			}
 			if (grid[i][j] == '#')
 			{
@@ -94,6 +114,12 @@ void Builder::Build(char LevelStruct[])
 				ladder->x = i * GRID_SIZE;
 				ladder->y = j * GRID_SIZE;
 				ObjectList.push_back(ladder);
+		
+				Path* path = new Path();
+				path->x = ladder->x;
+				path->y = ladder->y;
+				PathList.push_back(path);
+				
 
 			}
 
@@ -104,6 +130,11 @@ void Builder::Build(char LevelStruct[])
 				coin->y = j * GRID_SIZE;
 				ObjectList.push_back(coin);
 				CoinCount++;
+
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j)* GRID_SIZE;
+				PathList.push_back(path);
 			}
 
 			if (grid[i][j] == '@')
@@ -113,6 +144,11 @@ void Builder::Build(char LevelStruct[])
 				teleport->y = j * GRID_SIZE;
 				ObjectList.push_back(teleport);
 				CurrentLevel->teleport = teleport;
+
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j)* GRID_SIZE;
+				PathList.push_back(path);
 			}
 
 			if (grid[i][j] == '-')
@@ -121,6 +157,12 @@ void Builder::Build(char LevelStruct[])
 				tube->x = i * GRID_SIZE;
 				tube->y = j * GRID_SIZE;
 				ObjectList.push_back(tube);
+
+
+				Path* path = new Path();
+				path->x = i * GRID_SIZE;
+				path->y = (j)* GRID_SIZE;
+				PathList.push_back(path);
 			}
 
 		}

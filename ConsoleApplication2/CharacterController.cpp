@@ -78,6 +78,12 @@ void CharacterController::UpdateCoords(Runner * runner, Input* input)
 void CharacterController::RunningUpdate(Runner * runner, Input * input)
 {
 
+	if (input->KeyDown(SDL_SCANCODE_LSHIFT))
+	{
+		if (runner->GodMode == true) runner->GodMode = false;
+		if (runner->GodMode == false) runner->GodMode = true;
+	}
+
 
 	if (input->KeyDown(SDL_SCANCODE_LCTRL))
 	{
@@ -213,7 +219,109 @@ void CharacterController::DiggingUpdate(Runner* runner)
 }
 
 
-void CharacterController::UpdateRobotCoords(Robot * robot, Input * input)
+void CharacterController::UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf)
 {
+	int i = 0;
+
+	if (robot->GetReady())
+	{
+		if (pathf->FindPath(robot->getx(), robot->gety(), runner->getx(), runner->gety()))
+		{
+			robot->SetReady(false);
+			while (i < 5 && !robot->GetReady())
+			{
+				robot->SetPrevCoords(pathf->GetNextPathX(), pathf->GetNextPathY());
+				MoveRobot(robot, pathf->GetNextPathX(),pathf->GetNextPathY());
+				i++;
+			}
+		}
+
+	}
+	else
+	{
+
+
+		while (i < 5 && !robot->GetReady())
+		{
+			robot->SetReady(false);
+			MoveRobot(robot, robot->GetPrevX(), robot->GetPrevY());
+			i++;
+		}
+
+
+	}
+
+}
+
+void CharacterController::MoveRobot(Robot * robot,int x,int y)
+{
+
+	if (robot->gety() == y * 32)
+	{
+		if (robot->getx() < x * 32)
+		{
+			robot->dir = Right;
+			robot->MoveRight(1);
+			robot->SetReady(false);
+		}
+
+		else if (robot->getx() > x * 32)
+		{
+			robot->MoveLeft(1);
+			robot->dir = Left;
+			robot->SetReady(false);
+		}
+		else robot->SetReady(true);
+	}
+	else
+	{
+		if (robot->gety() > y * 32)
+		{
+			if (robot->getx() == x * 32)
+			{
+				robot->ClimbUp(1);
+				robot->dir = Up;
+
+			}
+			else if (robot->getx() > x * 32)
+			{
+				robot->MoveLeft(1);
+				robot->dir = Left;
+
+			}
+			else
+			{
+				robot->dir = Right;
+				robot->MoveRight(1);
+			}
+
+			robot->SetReady(false);
+
+		}
+
+		else
+		{
+			if (robot->getx() == x * 32)
+			{
+				robot->ClimbDown(1);
+				robot->dir = Down;
+			}
+			else if (robot->getx() > x * 32)
+			{
+				robot->MoveLeft(1);
+				robot->dir = Left;
+
+			}
+			else
+			{
+				robot->dir = Right;
+				robot->MoveRight(1);
+			}
+
+			robot->SetReady(false);
+		}
+
+	}
+
 }
 

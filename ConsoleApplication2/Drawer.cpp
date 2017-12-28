@@ -69,6 +69,15 @@ Drawer::Drawer(Graphics* graph)
 	str = "../assets/background/Button_Play_Active.bmp";
 	TestAsset[22] = graph->NewSprite(&str, 255, 0, 255);
 
+	str = "../assets/Robot_Run_Left.bmp";
+	TestAsset[23] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Robot_Run_Right.bmp";
+	TestAsset[24] = graph->NewSprite(&str, 255, 0, 255);
+
+	str = "../assets/Robot_Climb.bmp";
+	TestAsset[25] = graph->NewSprite(&str, 255, 0, 255);
+
 }
 
 void Drawer::DrawBackgrounds(Graphics* graph, LevelManager* lvlman)
@@ -240,6 +249,38 @@ void Drawer::UpdateSprite(Object* object, Graphics* graph, Builder * builder)
 	graph->DrawSprite(TestAsset[0], object->getx(), object->gety());
 
 
+}
+
+void Drawer::UpdateSprite(Robot * robot, Graphics * graph)
+{
+	if (robot->getdir() == Left)
+	{
+			if (rLeftFrame > 2) rLeftFrame = 0;
+
+			graph->DrawSprite(TestAsset[23], robot->getx(), robot->gety(), rLeftFrame * 32, 0, 32, 32);
+			rLeftFrame++;
+	}
+
+	if (robot->getdir() == Right)
+	{
+			if (rRightFrame > 2) rRightFrame = 0;
+
+			graph->DrawSprite(TestAsset[24], robot->getx(), robot->gety(), rRightFrame * 32, 0, 32, 32);
+			rRightFrame++;
+	}
+
+	if (robot->getdir() == Up)
+	{
+
+			graph->DrawSprite(TestAsset[25], robot->getx(), robot->gety());
+
+	}
+
+
+	if (robot->getdir() == Down)
+	{
+		graph->DrawSprite(TestAsset[25], robot->getx(), robot->gety(), 0, 0, 32, 32);
+	}
 }
 
 void Drawer::UpdateScoreSprite(Graphics* graph, Builder * builder)
