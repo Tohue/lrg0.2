@@ -5,6 +5,8 @@
 #include <iterator>
 
 
+
+
 Game::Game()
 {
 	IsOn = true;
@@ -38,12 +40,13 @@ int Game::Run(int x, int y)
 		if (lvlman->st != InMenu)
 		{
 			soundman->UpdateSounds(builder, charcont, input);
-			collider->UpdateCollisions(builder, charcont, GetInput(), lvlman, soundman, pathf);
+			collider->UpdateCollisions(builder, charcont, GetInput(), lvlman, soundman, pathf, collider);
 			for (std::list<Object*>::iterator it = builder->ObjectList.begin(); it != builder->ObjectList.end(); ++it)
 				drawer->UpdateSprite(*it, graph, builder);
 			for (std::list<Robot*>::iterator it1 = builder->EnemyList.begin(); it1 != builder->EnemyList.end(); ++it1)
 			{
-				charcont->UpdateRobotCoords((*it1), input, builder->runner, pathf);
+
+				charcont->UpdateRobotCoords((*it1), input, builder->runner, pathf, collider->FallPoints);
 				drawer->UpdateSprite(*it1, graph);
 			}
 				

@@ -14,9 +14,11 @@
 class Object;
 class Runner;
 class Robot;
+class Point;
 
-//Enum for checing what's going on with main character
-
+/*!
+\brief Enum for checking what's going on with main character
+*/
 
 enum states { Running, Digging, Falling, Climbing, Tubing };
 
@@ -40,15 +42,53 @@ public:
 	friend class Collider;
 	states state = Running;
 
-	bool IsClimbing();
-	bool IsTubing();
+	bool IsClimbing(); ///< for climbing updates
+	bool IsTubing(); ///< for updates when the character is climbing on tube
 
+	/*!
+	\brief Updates the state of the runner
+	\param[out] runner - what runner should be checked 
+	\param[in] input - an input object so we can check if something is pressed
+	*/
 	states UpdateCharacterState(Runner* runner, Input* input);
-	void UpdateCoords(Runner * runner, Input* input);
+	/*!
+	\brief Updates runners coordinates if something is pressed
+	\param[out] runner - what runner should be moved
+	\param[in] input - an input object so we can check if something is pressed
+	*/
+	void UpdateCoords(Runner * runner, Input* input, Collider* collider);
+	/*!
+	\brief The third update if the character happens to be running
+	\param[out] runner
+	\param[in] input
+	*/
 	void RunningUpdate(Runner * runner, Input* input);
+	/*!
+	\brief The third update if the character happens to be falling
+	\param[out] runner
+	*/
 	void FallingUpdate(Runner * runner);
-	void DiggingUpdate(Runner* runner);
-	void UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf);
+	/*!
+	\brief The third update if the character happens to be digging
+	\param[out] runner
+	\param[in] collider
+	*/
+	void DiggingUpdate(Runner* runner, Collider* collider);
+	/*!
+	\brief Updates the specific robot coordinates
+	\param[out] robot - the robot which is being moved
+	\param[in] input
+	\param[in] runner - to check the paths to the character
+	\param[out] pathf - path controller to update the paths if needed
+	\param[in] points - the list of points where the robot whould fall into the pit
+	*/
+	void UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf, std::list<Point*> points);
+	/*!
+	\brief A function to move robot in the direction of path
+	\param[out] robot - robot to move
+	\param[in] x - the X of next path block
+	\param[in] y - the Y of next path block
+	*/
 	void MoveRobot(Robot* robot, int x, int y);
 };
 

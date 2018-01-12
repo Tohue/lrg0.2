@@ -51,6 +51,16 @@ Runner::Runner()
 	Speed = 5;
 }
 
+bool Robot::GetStuck()
+{
+	return IsStuck;
+}
+
+void Robot::SetStuck(bool state)
+{
+	IsStuck = state;
+}
+
 bool Robot::GetReady()
 {
 	return IsReady;

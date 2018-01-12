@@ -40,14 +40,14 @@ states CharacterController::UpdateCharacterState(Runner* runner, Input* input)
 		return Falling;
 }
 
-void CharacterController::UpdateCoords(Runner * runner, Input* input)
+void CharacterController::UpdateCoords(Runner * runner, Input* input, Collider* collider)
 {
 
 	switch (state = UpdateCharacterState(runner, input))
 	{
 	case Digging:
 	{
-		DiggingUpdate(runner);
+		DiggingUpdate(runner, collider);
 	}
 
 		break;
@@ -183,8 +183,9 @@ void CharacterController::FallingUpdate(Runner * runner)
 }
 
 
-void CharacterController::DiggingUpdate(Runner* runner)
+void CharacterController::DiggingUpdate(Runner* runner, Collider* collider)
 {
+	Point* point;
 	if (DiggingTimer < 10)
 	{
 		if (DiggingTimer == 1)
@@ -197,9 +198,18 @@ void CharacterController::DiggingUpdate(Runner* runner)
 		if (DiggingTimer == 8)
 		{
 			if (runner->dir == DigLeft && LeftDel != NULL && !LeftDel->Climbable)
+			{
 				LeftDel->SetSolid(false);
+				point = new Point(LeftDel->getx(), LeftDel->gety());
+				collider->FallPoints.push_back(point);
+			}
+				
 			else if (runner->dir == DigRight && RightDel != NULL && !RightDel->Climbable)
+			{
 				RightDel->SetSolid(false);
+				point = new Point(RightDel->getx(), RightDel->gety());
+				collider->FallPoints.push_back(point);
+			}
 		}
 		DiggingTimer++;
 	}
@@ -209,6 +219,7 @@ void CharacterController::DiggingUpdate(Runner* runner)
 		if (runner->dir == DigRight) runner->dir = Right;
 		DiggingTimer = 0;
 		state = Running;
+
 	}
 		
 		
@@ -219,37 +230,56 @@ void CharacterController::DiggingUpdate(Runner* runner)
 }
 
 
-void CharacterController::UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf)
+void CharacterController::UpdateRobotCoords(Robot* robot, Input* input, Runner* runner, PathFinder* pathf, std::list<Point*> points)
 {
 	int i = 0;
 
-	if (robot->GetReady())
+	if (!robot->GetStuck())
 	{
-		if (pathf->FindPath(robot->getx(), robot->gety(), runner->getx(), runner->gety()))
+		for (std::list<Point*>::iterator it1 = points.begin(); it1 != points.end(); ++it1)
 		{
-			robot->SetReady(false);
+			if ((robot->getx() == (*it1)->getx()) && (robot->gety() == (*it1)->gety() - 32))
+			{
+				printf("qweq3weqweqwe\n");
+				robot->SetStuck(true);
+				robot->x = (*it1)->getx();
+				robot->y = (*it1)->gety();
+			}
+
+		}
+
+		if (robot->GetReady())
+		{
+			if (pathf->FindPath(robot->getx(), robot->gety(), runner->getx(), runner->gety()))
+			{
+				robot->SetReady(false);
+				while (i < 5 && !robot->GetReady())
+				{
+					robot->SetPrevCoords(pathf->GetNextPathX(), pathf->GetNextPathY());
+					MoveRobot(robot, pathf->GetNextPathX(), pathf->GetNextPathY());
+					i++;
+				}
+			}
+
+		}
+		else
+		{
+
+
 			while (i < 5 && !robot->GetReady())
 			{
-				robot->SetPrevCoords(pathf->GetNextPathX(), pathf->GetNextPathY());
-				MoveRobot(robot, pathf->GetNextPathX(),pathf->GetNextPathY());
+				robot->SetReady(false);
+				MoveRobot(robot, robot->GetPrevX(), robot->GetPrevY());
 				i++;
 			}
-		}
-
-	}
-	else
-	{
 
 
-		while (i < 5 && !robot->GetReady())
-		{
-			robot->SetReady(false);
-			MoveRobot(robot, robot->GetPrevX(), robot->GetPrevY());
-			i++;
 		}
 
 
 	}
+
+
 
 }
 

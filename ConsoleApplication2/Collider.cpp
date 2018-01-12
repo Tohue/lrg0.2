@@ -98,7 +98,7 @@ bool Collider::CheckStanding(Runner* runner, Object* obj)
 
 
 
-void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman, SoundManager* soundman, PathFinder* pathf)
+void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont, Input* input, LevelManager * lvlman, SoundManager* soundman, PathFinder* pathf, Collider* collider)
 {
 	bool CheckClear = false;
 	Object* ToRemove = NULL;
@@ -219,7 +219,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 		
 
 
-	charcont->UpdateCoords(builder->runner, input);
+	charcont->UpdateCoords(builder->runner, input, collider);
 
 
 	if (CheckClear)
@@ -235,6 +235,7 @@ void Collider::UpdateCollisions(Builder* builder, CharacterController* charcont,
 	charcont->LeftCol = false;
 	charcont->RightCol = false;
 }
+
 
 
 Object* Collider::FindPreviousBlock(Object* obj, std::list<Object*> list)
@@ -254,3 +255,20 @@ Object* Collider::FindNextBlock(Object* obj, std::list<Object*> list)
 
 	return NULL;
 }
+
+Point::Point(int X, int Y)
+{
+	x = X;
+	y = Y;
+}
+
+int Point::getx()
+{
+	return x;
+}
+
+int Point::gety()
+{
+	return y;
+}
+
